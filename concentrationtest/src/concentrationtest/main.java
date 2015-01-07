@@ -8,5 +8,6 @@ public class main {
 		frame1.main();
 		
 		System.out.println("test");
+		System.out.println("Dummarsch");
 	}
 }
