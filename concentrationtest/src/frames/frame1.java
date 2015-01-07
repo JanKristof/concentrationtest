@@ -9,8 +9,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import concentrationtest.numbers;
-
 import java.awt.Font;
 
 public class frame1 extends JFrame {
