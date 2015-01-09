@@ -2,6 +2,10 @@ package concentrationtest;
 
 public class results {
 	
-	//Ergebnisse hier...
+	public int showresults(){
+		
+		
+		return 0;
+	}
 	
 }
