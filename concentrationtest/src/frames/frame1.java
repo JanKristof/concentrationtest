@@ -1,5 +1,6 @@
 package frames;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -24,9 +25,6 @@ public class frame1 extends JFrame {
 	private JTextField ergebnis6;
 	private JTextField ergebnis7;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -40,9 +38,6 @@ public class frame1 extends JFrame {
 		});
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public frame1() {
 		setTitle("frame1");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -258,25 +253,46 @@ public class frame1 extends JFrame {
 				int row;
 				for (col=0; col<=6; col++){
 					for (row=0; row<=5; row++)
-						result[col]+=numbers.readarray(col ,row);		
-					ergebnis1.setText(String.valueOf(result[0]));
-					ergebnis2.setText(String.valueOf(result[1]));
-					ergebnis3.setText(String.valueOf(result[2]));
-					ergebnis4.setText(String.valueOf(result[3]));
-					ergebnis5.setText(String.valueOf(result[4]));
-					ergebnis6.setText(String.valueOf(result[5]));
-					ergebnis7.setText(String.valueOf(result[6]));
-				}
+						result[col]+=numbers.readarray(col ,row);	
+					}
+				if (ergebnis1.getText()==String.valueOf(result[0]))
+						ergebnis1.setBackground(Color.green);
+				else
+					ergebnis1.setText("falsch");
+				if (ergebnis2.getText()==String.valueOf(result[1]))
+						ergebnis2.setBackground(Color.green);
+				else
+					ergebnis2.setText("falsch");
+				if (ergebnis3.getText()==String.valueOf(result[2]))
+						ergebnis3.setBackground(Color.green);
+				else
+					ergebnis3.setText("falsch");
+				if (ergebnis4.getText()==String.valueOf(result[3]))
+						ergebnis4.setBackground(Color.green);
+				else
+					ergebnis4.setText("falsch");
+				if (ergebnis5.getText()==String.valueOf(result[4]))
+						ergebnis5.setBackground(Color.green);
+				else
+					ergebnis5.setText("falsch");
+				if (ergebnis6.getText()==String.valueOf(result[5]))
+						ergebnis6.setBackground(Color.green);
+				else
+					ergebnis6.setText("falsch");
+				if (ergebnis7.getText()==String.valueOf(result[6]))
+						ergebnis7.setBackground(Color.green);
+				else
+					ergebnis7.setText("falsch");
 			}
 		});
 		button_next.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		button_next.setBounds(231, 232, 99, 28);
 		contentPane.add(button_next);
 		
-		JLabel time = new JLabel("Noch: xx Sekunden");
-		time.setFont(new Font("Tahoma", Font.BOLD, 16));
-		time.setBounds(20, 232, 201, 26);
-		contentPane.add(time);
+		JLabel timelabel = new JLabel("Noch: xx Sekunden");
+		timelabel.setFont(new Font("Tahoma", Font.BOLD, 16));
+		timelabel.setBounds(20, 232, 201, 26);
+		contentPane.add(timelabel);
 		
 		ergebnis7 = new JTextField();
 		ergebnis7.setColumns(10);
