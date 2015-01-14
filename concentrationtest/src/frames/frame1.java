@@ -2,6 +2,10 @@ package frames;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.util.Timer; //kp ob das noch wichtig is..
+import java.util.TimerTask;
+
+
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -9,7 +13,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import javax.swing.Timer;
+//import javax.swing.Timer; //hier nicht mehr nötig
+
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -84,39 +89,48 @@ public class frame1 extends JFrame {
 		button_next.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		button_next.setBounds(231, 232, 99, 28);
 		contentPane.add(button_next);
-
-		JLabel timelabel = new JLabel("Noch: xx Sekunden");
+		
+		
+		JLabel timelabel = new JLabel(String.valueOf(System.in.read())); //kp man
 		timelabel.setFont(new Font("Tahoma", Font.BOLD, 16));
 		timelabel.setBounds(20, 232, 201, 26);
 		contentPane.add(timelabel);
 
 		//++++++++++DER TIMER FUNKTIONIERT NICHT!!!++++++++++++++++++++++++++++++++
 		
+		countdown.main(); 
 		
-//		int counterValue = 42;
-//		Timer timer;
-//		// JLabel label;
-//
-//		// Timer erzeugen, jede 1000 Millisekunden (= 1 Sekunde)
-//		// Methode actionPerformed aufrufen.
-//		timer = new Timer(1000, new ActionListener() {
-//
-//			public void actionPerformed(ActionEvent e) {
-//				JLabel label;
-//				// 1 Sekunde abziehen
-//				counterValue--;
-//
-//				// Zahl in Label darstellen
-//				timelabel.setText(String.valueOf(counterValue));
-//
-//				// Falls Zähler = 0, Countdown abgelaufen!
-//				if (counterValue == 0) {
-//					System.out.println("Counterdown ausgelaufen!");
-//					// Timer stoppen
-//					timer.stop();
-//				}
-//			}
-//		});
-//		timer.start();
+		//int counterValue = 42;
+		//Timer timer;
+		// JLabel label;
+
+		// Timer erzeugen, jede 1000 Millisekunden (= 1 Sekunde)
+		// Methode actionPerformed aufrufen.
+		//timer = new Timer(1000, new ActionListener() {
+
+			
+			
+			/*public void actionPerformed(ActionEvent e) {
+				JLabel label;
+				// 1 Sekunde abziehen
+				counterValue--;
+
+				// Zahl in Label darstellen
+				timelabel.setText(String.valueOf(counterValue));
+
+				// Falls Zähler = 0, Countdown abgelaufen!
+				if (counterValue == 0) {
+					System.out.println("Counterdown ausgelaufen!");
+					// Timer stoppen
+					timer.stop();
+				}
+			} */
+		//});
+		//timer.start();
+		
+		
+		    
+		}
+
 	}
 }
