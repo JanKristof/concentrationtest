@@ -11,4 +11,8 @@ public class numbers {
 	public static int readarray(int col, int row){	
 		return (int) number[col][row];	
 	}
+	
+	public static void clear(){	
+		int[][] number = new int[9][9];
+	}
 }
