@@ -13,13 +13,17 @@ import javax.swing.JTextField;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.SwingConstants;
+import java.awt.Window.Type;
 
 public class frame1 extends JFrame {
 
 	private JPanel contentPane;
 	JTextField[] ergebnisse = new JTextField[7];
-	JLabel[] labels = new JLabel[42];
+	JLabel[][] labels = new JLabel[7][6];
 	int time = 20;
+	int blogs = 9; //	= (Maximale Anzahl and Rechenblöcken) - 1
+	private JTextField textField;
 
 	public static void main() {
 		EventQueue.invokeLater(new Runnable() {
@@ -35,9 +39,10 @@ public class frame1 extends JFrame {
 	}
 
 	public frame1() {
-		setTitle("frame1");
+		setType(Type.UTILITY);
+		setTitle("Konzentrationstest");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 360, 308);
+		setBounds(100, 100, 560, 520);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -48,17 +53,21 @@ public class frame1 extends JFrame {
 			numbers.clear();
 			ergebnisse[i] = new JTextField();
 			ergebnisse[i].setColumns(10);
-			ergebnisse[i].setBounds(240, 10 + (32 * i), 86, 20);
+			ergebnisse[i].setBounds(380, 20 + (60 * i), 140, 30);
+			ergebnisse[i].setFont(new Font("Tahoma", Font.PLAIN, 20));
+			ergebnisse[i].setHorizontalAlignment(SwingConstants.CENTER);
 			contentPane.add(ergebnisse[i]);
 			for (int j = 0; j < 6; j++) {
 				if (j == 5) {
-					labels[i] = new JLabel(numbers.check(i, j) + "    =");
-					labels[i].setBounds(15 + (35 * j), 11 + (32 * i), 46, 14);
-					contentPane.add(labels[i]);
+					labels[i][j] = new JLabel(numbers.check(i, j) + "   =");
+					labels[i][j].setBounds(20 + (60 * j), 20 + (60 * i), 60, 20);
+					labels[i][j].setFont(new Font("Tahoma", Font.PLAIN, 20));
+					contentPane.add(labels[i][j]);
 				} else {
-					labels[i] = new JLabel(numbers.check(i, j) + "    +");
-					labels[i].setBounds(15 + (35 * j), 11 + (32 * i), 46, 14);
-					contentPane.add(labels[i]);
+					labels[i][j] = new JLabel(numbers.check(i, j) + "   +");
+					labels[i][j].setBounds(20 + (60 * j), 20 + (60 * i), 60, 20);
+					labels[i][j].setFont(new Font("Tahoma", Font.PLAIN, 20));
+					contentPane.add(labels[i][j]);
 				}
 			}
 		}
@@ -69,22 +78,25 @@ public class frame1 extends JFrame {
 				newblog();
 			}
 		});
-		button_next.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		button_next.setBounds(231, 232, 99, 28);
+		button_next.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		button_next.setBounds(362, 423, 172, 47);
 		contentPane.add(button_next);
 
-		JLabel timelabel = new JLabel(); // kp man
-		timelabel.setFont(new Font("Tahoma", Font.BOLD, 16));
-		timelabel.setBounds(12, 232, 201, 26);
+		JLabel timelabel = new JLabel();
+		timelabel.setHorizontalAlignment(SwingConstants.CENTER);
+		timelabel.setFont(new Font("Tahoma", Font.BOLD, 20));
+		timelabel.setBounds(10, 423, 342, 47);
 		contentPane.add(timelabel);
 
-		final Timer timer = new Timer();
+		final Timer timer = new Timer();	//der legendäre timer O.O
 		timer.scheduleAtFixedRate(new TimerTask() {
 
 			public void run() {
 				timelabel.setText("noch " + String.valueOf(time) + " Sekunden!");
 				if (time == 0) {
+					if (blogs==10)
 					timer.cancel();
+					else
 					newblog();
 				}
 				time--;
@@ -109,24 +121,19 @@ public class frame1 extends JFrame {
 			else
 				ergebnisse[i].setBackground(Color.red);
 		}
-		try { 										//
-            Thread.sleep(1000); 					// Verbesserungsbedarf!
-        } catch (InterruptedException e) { 			// Hier soll eine Sekunde gewartet werden,
-            e.printStackTrace(); 					// damit man (für eine Sekunde farbig markiert,) sieht was falsch/richtig war!
-        }  											// Anstelle davon hält aber alles (auch das davor) an und wartet.
 		numbers.clear();
 		for (int i = 0; i <= 6; i++) {
 			
 			ergebnisse[i].setText("");
-			ergebnisse[i].setBackground(Color.white);
 			for (int j = 0; j < 6; j++) {
 				if (j == 5) {
-					labels[i].setText(numbers.check(i, j) + "    =");
+					labels[i][j].setText(numbers.check(i, j) + "    =");
 				} else {
-					labels[i].setText(numbers.check(i, j) + "    +"); //Warum aktualisiert sich nur die letzte Reihe?
+					labels[i][j].setText(numbers.check(i, j) + "    +");
 				}
 			}
 		}
-
+		time=20;
+		blogs--;
 	}
 }
