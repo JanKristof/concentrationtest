@@ -27,7 +27,7 @@ public class frame1 extends JFrame {
 	JTextField[] ergebnisse = new JTextField[7];
 	JLabel[][] labels = new JLabel[7][6];
 	int time = 20;
-	int blog = 10; // = (Maximale Anzahl and Rechenblöcken)
+	int blog = 9; // = (Maximale Anzahl and Rechenblöcken)
 	JLabel remainingblogs = new JLabel("noch " + String.valueOf(blog)
 			+ " Rechenblöcke");
 	JLabel timelabel = new JLabel();
