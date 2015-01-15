@@ -19,9 +19,6 @@ public class results {
 	}
 
 	public static String getcorrectanswerspercentage() {
-		double temp = 7 * 10 * 100;
-		return String.valueOf("das entspricht: "
-				+ Math.round((double) corrects / 7 * 10))
-				+ " %";
+		return String.valueOf("das entspricht: " + Math.round((double) corrects / 7 * 10)) + " %";
 	}
 }

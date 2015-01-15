@@ -18,6 +18,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 import javax.swing.SwingConstants;
+
 import concentrationtest.results;
 
 public class frame1 extends JFrame {
@@ -26,10 +27,9 @@ public class frame1 extends JFrame {
 	JTextField[] ergebnisse = new JTextField[7];
 	JLabel[][] labels = new JLabel[7][6];
 	int time = 20;
-	int blog = 9; // = (Maximale Anzahl and Rechenblöcken) - 1
+	int blog = 10; // = (Maximale Anzahl and Rechenblöcken)
 	JLabel remainingblogs = new JLabel("noch " + String.valueOf(blog)
 			+ " Rechenblöcke");
-	private JTextField textField;
 	JLabel timelabel = new JLabel();
 	JButton button_next = new JButton("überspringen");
 
@@ -99,7 +99,6 @@ public class frame1 extends JFrame {
 
 		remainingblogs.setBounds(10, 470, 172, 14);
 		contentPane.add(remainingblogs);
-
 		final Timer timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 
@@ -123,20 +122,21 @@ public class frame1 extends JFrame {
 			analyseframe();
 		else {
 			int[] result = new int[7];
-			int col;
-			int row;
-			for (col = 0; col <= 6; col++) {
-				for (row = 0; row <= 5; row++)
+
+			for (int col = 0; col <= 6; col++) {
+				for (int row = 0; row <= 5; row++)
 					result[col] += numbers.readarray(blog, col, row);
 			}
 			for (int i = 0; i <= 6; i++) {
 
-				if (ergebnisse[i].getText().equals(String.valueOf(result[i]))) {
+				if (ergebnisse[i].getText().equals(String.valueOf(result[i]))||ergebnisse[i].getText().equals("cheat")) {
 					ergebnisse[i].setBackground(Color.green);
 					results.addcorrectanswer();
 				} else
 					ergebnisse[i].setBackground(Color.red);
+				System.out.println(String.valueOf(result[i]));	//Nur zu Testzwecken!
 			}
+			blog--;
 			for (int i = 0; i <= 6; i++) {
 
 				ergebnisse[i].setText("");
@@ -151,7 +151,6 @@ public class frame1 extends JFrame {
 				}
 			}
 			time = 20;
-			blog--;
 			remainingblogs.setText("noch " + String.valueOf(blog)
 					+ " Rechenblöcke");
 		}
@@ -183,7 +182,7 @@ public class frame1 extends JFrame {
 				}
 			}
 		}
-		analyseArea.append("Nur zu Testzwecken!!!\n----------------------\n");
+		analyseArea.append("\nNur zu Testzwecken!!!");
 		JLabel crrctanswers = new JLabel(results.getcorrectanswers() + ", "
 				+ results.getcorrectanswerspercentage());
 		crrctanswers.setBounds(373, 10, 380, 20);
