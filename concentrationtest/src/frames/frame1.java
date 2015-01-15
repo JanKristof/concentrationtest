@@ -2,18 +2,23 @@ package frames;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.TextArea;
 import java.util.Timer;
 import java.util.TimerTask;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+
 import javax.swing.SwingConstants;
+import concentrationtest.results;
 
 public class frame1 extends JFrame {
 
@@ -21,9 +26,12 @@ public class frame1 extends JFrame {
 	JTextField[] ergebnisse = new JTextField[7];
 	JLabel[][] labels = new JLabel[7][6];
 	int time = 20;
-	int blogs = 10; // = (Maximale Anzahl and Rechenblöcken) - 1
-	JLabel remainingblogs = new JLabel("noch " + String.valueOf(blogs) + " Rechenblöcke");
+	int blog = 9; // = (Maximale Anzahl and Rechenblöcken) - 1
+	JLabel remainingblogs = new JLabel("noch " + String.valueOf(blog)
+			+ " Rechenblöcke");
 	private JTextField textField;
+	JLabel timelabel = new JLabel();
+	JButton button_next = new JButton("überspringen");
 
 	public static void main() {
 		EventQueue.invokeLater(new Runnable() {
@@ -50,7 +58,6 @@ public class frame1 extends JFrame {
 
 		for (int i = 0; i <= 6; i++) {
 
-			numbers.clear();
 			ergebnisse[i] = new JTextField();
 			ergebnisse[i].setColumns(10);
 			ergebnisse[i].setBounds(380, 20 + (60 * i), 140, 30);
@@ -59,13 +66,15 @@ public class frame1 extends JFrame {
 			contentPane.add(ergebnisse[i]);
 			for (int j = 0; j < 6; j++) {
 				if (j == 5) {
-					labels[i][j] = new JLabel(numbers.check(i, j) + "   =");
+					labels[i][j] = new JLabel(numbers.check(blog, i, j)
+							+ "   ="); // blog entspricht hier also null
 					labels[i][j]
 							.setBounds(20 + (60 * j), 20 + (60 * i), 60, 20);
 					labels[i][j].setFont(new Font("Tahoma", Font.PLAIN, 20));
 					contentPane.add(labels[i][j]);
 				} else {
-					labels[i][j] = new JLabel(numbers.check(i, j) + "   +");
+					labels[i][j] = new JLabel(numbers.check(blog, i, j)
+							+ "   +");
 					labels[i][j]
 							.setBounds(20 + (60 * j), 20 + (60 * i), 60, 20);
 					labels[i][j].setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -74,7 +83,6 @@ public class frame1 extends JFrame {
 			}
 		}
 
-		JButton button_next = new JButton("weiter");
 		button_next.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				newblog();
@@ -84,7 +92,6 @@ public class frame1 extends JFrame {
 		button_next.setBounds(362, 423, 172, 47);
 		contentPane.add(button_next);
 
-		JLabel timelabel = new JLabel();
 		timelabel.setHorizontalAlignment(SwingConstants.CENTER);
 		timelabel.setFont(new Font("Tahoma", Font.BOLD, 20));
 		timelabel.setBounds(10, 423, 342, 47);
@@ -99,10 +106,10 @@ public class frame1 extends JFrame {
 			public void run() {
 				timelabel.setText("noch " + String.valueOf(time) + " Sekunden!");
 				if (time == 0) {
-					if (blogs == 0) {
+					if (blog == 0) {
 						timer.cancel();
-					}
-					else
+						analyseframe();
+					} else
 						newblog();
 				}
 				time--;
@@ -112,38 +119,75 @@ public class frame1 extends JFrame {
 
 	public void newblog() {
 
-		if (blogs == 0)
-			contentPane.setBackground(Color.blue);
+		if (blog == 0)
+			analyseframe();
 		else {
 			int[] result = new int[7];
 			int col;
 			int row;
 			for (col = 0; col <= 6; col++) {
 				for (row = 0; row <= 5; row++)
-					result[col] += numbers.readarray(col, row);
+					result[col] += numbers.readarray(blog, col, row);
 			}
 			for (int i = 0; i <= 6; i++) {
 
-				if (ergebnisse[i].getText().equals(String.valueOf(result[i])))
+				if (ergebnisse[i].getText().equals(String.valueOf(result[i]))) {
 					ergebnisse[i].setBackground(Color.green);
-				else
+					results.addcorrectanswer();
+				} else
 					ergebnisse[i].setBackground(Color.red);
 			}
-			numbers.clear();
 			for (int i = 0; i <= 6; i++) {
 
 				ergebnisse[i].setText("");
 				for (int j = 0; j < 6; j++) {
 					if (j == 5) {
-						labels[i][j].setText(numbers.check(i, j) + "    =");
+						labels[i][j].setText(numbers.check(blog, i, j)
+								+ "    =");
 					} else {
-						labels[i][j].setText(numbers.check(i, j) + "    +");
+						labels[i][j].setText(numbers.check(blog, i, j)
+								+ "    +");
 					}
 				}
 			}
 			time = 20;
-			blogs--;
-			remainingblogs.setText("noch " + String.valueOf(blogs) + " Rechenblöcke");
+			blog--;
+			remainingblogs.setText("noch " + String.valueOf(blog)
+					+ " Rechenblöcke");
 		}
+	}
+
+	public void analyseframe() {
+
+		for (int i = 0; i <= 6; i++) {
+
+			ergebnisse[i].setText("");
+			ergebnisse[i].setVisible(false);
+			for (int j = 0; j < 6; j++)
+				labels[i][j].setVisible(false);
+		}
+		timelabel.setVisible(false);
+		remainingblogs.setVisible(false);
+		button_next.setVisible(false);
+		setBounds(100, 100, 700, 400);
+
+		TextArea analyseArea = new TextArea();
+		analyseArea.setBounds(10, 11, 350, 350);
+		contentPane.add(analyseArea);
+		for (int blogs = 1; blogs <= 10; blogs++) {
+			analyseArea.append("\n" + String.valueOf(blogs) + ".Block:\n");
+			for (int cols = 0; cols <= 6; cols++) {
+				for (int rows = 0; rows <= 5; rows++) {
+					analyseArea.append(String.valueOf(numbers.readarray(blogs,
+							cols, rows)));
+				}
+			}
+		}
+		analyseArea.append("Nur zu Testzwecken!!!\n----------------------\n");
+		JLabel crrctanswers = new JLabel(results.getcorrectanswers() + ", "
+				+ results.getcorrectanswerspercentage());
+		crrctanswers.setBounds(373, 10, 380, 20);
+		crrctanswers.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		contentPane.add(crrctanswers);
 	}
 }
