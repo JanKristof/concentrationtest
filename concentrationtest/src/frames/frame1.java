@@ -14,7 +14,6 @@ import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
-import java.awt.Window.Type;
 
 public class frame1 extends JFrame {
 
@@ -22,7 +21,8 @@ public class frame1 extends JFrame {
 	JTextField[] ergebnisse = new JTextField[7];
 	JLabel[][] labels = new JLabel[7][6];
 	int time = 20;
-	int blogs = 9; //	= (Maximale Anzahl and Rechenblöcken) - 1
+	int blogs = 10; // = (Maximale Anzahl and Rechenblöcken) - 1
+	JLabel remainingblogs = new JLabel("noch " + String.valueOf(blogs) + " Rechenblöcke");
 	private JTextField textField;
 
 	public static void main() {
@@ -39,10 +39,10 @@ public class frame1 extends JFrame {
 	}
 
 	public frame1() {
-		setType(Type.UTILITY);
+		setResizable(false);
 		setTitle("Konzentrationstest");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 560, 520);
+		setBounds(100, 100, 555, 515);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -60,12 +60,14 @@ public class frame1 extends JFrame {
 			for (int j = 0; j < 6; j++) {
 				if (j == 5) {
 					labels[i][j] = new JLabel(numbers.check(i, j) + "   =");
-					labels[i][j].setBounds(20 + (60 * j), 20 + (60 * i), 60, 20);
+					labels[i][j]
+							.setBounds(20 + (60 * j), 20 + (60 * i), 60, 20);
 					labels[i][j].setFont(new Font("Tahoma", Font.PLAIN, 20));
 					contentPane.add(labels[i][j]);
 				} else {
 					labels[i][j] = new JLabel(numbers.check(i, j) + "   +");
-					labels[i][j].setBounds(20 + (60 * j), 20 + (60 * i), 60, 20);
+					labels[i][j]
+							.setBounds(20 + (60 * j), 20 + (60 * i), 60, 20);
 					labels[i][j].setFont(new Font("Tahoma", Font.PLAIN, 20));
 					contentPane.add(labels[i][j]);
 				}
@@ -88,16 +90,20 @@ public class frame1 extends JFrame {
 		timelabel.setBounds(10, 423, 342, 47);
 		contentPane.add(timelabel);
 
-		final Timer timer = new Timer();	//der legendäre timer O.O
+		remainingblogs.setBounds(10, 470, 172, 14);
+		contentPane.add(remainingblogs);
+
+		final Timer timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 
 			public void run() {
 				timelabel.setText("noch " + String.valueOf(time) + " Sekunden!");
 				if (time == 0) {
-					if (blogs==10)
-					timer.cancel();
+					if (blogs == 0) {
+						timer.cancel();
+					}
 					else
-					newblog();
+						newblog();
 				}
 				time--;
 			}
@@ -105,35 +111,39 @@ public class frame1 extends JFrame {
 	}
 
 	public void newblog() {
-		
-		int[] result = new int[7];
-		int col;
-		int row;
-		for (col = 0; col <= 6; col++) {
-			for (row = 0; row <= 5; row++)
-				result[col] += numbers.readarray(col, row);
-		}
-		for (int i = 0; i <= 6; i++) {
 
-			if (ergebnisse[i].getText().equals(
-					String.valueOf(result[i])))
-				ergebnisse[i].setBackground(Color.green);
-			else
-				ergebnisse[i].setBackground(Color.red);
-		}
-		numbers.clear();
-		for (int i = 0; i <= 6; i++) {
-			
-			ergebnisse[i].setText("");
-			for (int j = 0; j < 6; j++) {
-				if (j == 5) {
-					labels[i][j].setText(numbers.check(i, j) + "    =");
-				} else {
-					labels[i][j].setText(numbers.check(i, j) + "    +");
+		if (blogs == 0)
+			contentPane.setBackground(Color.blue);
+		else {
+			int[] result = new int[7];
+			int col;
+			int row;
+			for (col = 0; col <= 6; col++) {
+				for (row = 0; row <= 5; row++)
+					result[col] += numbers.readarray(col, row);
+			}
+			for (int i = 0; i <= 6; i++) {
+
+				if (ergebnisse[i].getText().equals(String.valueOf(result[i])))
+					ergebnisse[i].setBackground(Color.green);
+				else
+					ergebnisse[i].setBackground(Color.red);
+			}
+			numbers.clear();
+			for (int i = 0; i <= 6; i++) {
+
+				ergebnisse[i].setText("");
+				for (int j = 0; j < 6; j++) {
+					if (j == 5) {
+						labels[i][j].setText(numbers.check(i, j) + "    =");
+					} else {
+						labels[i][j].setText(numbers.check(i, j) + "    +");
+					}
 				}
 			}
+			time = 20;
+			blogs--;
+			remainingblogs.setText("noch " + String.valueOf(blogs) + " Rechenblöcke");
 		}
-		time=20;
-		blogs--;
 	}
 }
