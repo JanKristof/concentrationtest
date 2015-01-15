@@ -4,11 +4,6 @@ public class results {
 
 	static int corrects = 0;
 
-	public int showresults() {
-
-		return 0;
-	}
-
 	public static void addcorrectanswer() {
 		corrects++;
 	}
@@ -19,6 +14,6 @@ public class results {
 	}
 
 	public static String getcorrectanswerspercentage() {
-		return String.valueOf("das entspricht: " + Math.round((double) corrects / 7 * 10)) + " %";
+		return "das entspricht: " + String.valueOf(Math.round((double) (corrects / 7 * 10) * 100) / 100) + " %";
 	}
 }
