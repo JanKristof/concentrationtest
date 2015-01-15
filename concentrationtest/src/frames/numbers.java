@@ -1,7 +1,7 @@
 package frames;
 
 public class numbers {
-	static int[][][] number = new int[10][7][6];
+	static int[][][] number = new int[11][7][6];
 
 	public static int check(int blog, int col, int row) {
 		number[10 - blog][col][row] = (int) (Math.random() * (9 - 1) + 1);
