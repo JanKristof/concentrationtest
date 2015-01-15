@@ -16,10 +16,10 @@ import javax.swing.JTextField;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-
 import javax.swing.SwingConstants;
-
 import concentrationtest.results;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class frame1 extends JFrame {
 
@@ -32,6 +32,9 @@ public class frame1 extends JFrame {
 			+ " Rechenblöcke");
 	JLabel timelabel = new JLabel();
 	JButton button_next = new JButton("überspringen");
+	JLabel timespec = new JLabel("New label");
+	float timestart;
+	float timeend;
 
 	public static void main() {
 		EventQueue.invokeLater(new Runnable() {
@@ -64,6 +67,7 @@ public class frame1 extends JFrame {
 			ergebnisse[i].setFont(new Font("Tahoma", Font.PLAIN, 20));
 			ergebnisse[i].setHorizontalAlignment(SwingConstants.CENTER);
 			contentPane.add(ergebnisse[i]);
+			// timestart = System.currentTimeMillis();
 			for (int j = 0; j < 6; j++) {
 				if (j == 5) {
 					labels[i][j] = new JLabel(numbers.check(blog, i, j)
@@ -85,9 +89,18 @@ public class frame1 extends JFrame {
 
 		button_next.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+
 				newblog();
 			}
 		});
+
+		ergebnisse[0].addFocusListener(new FocusAdapter() {
+			public void focusLost(FocusEvent arg0) {
+				// timeend = System.currentTimeMillis();
+				results.addtime(((timeend - timestart) / 1000));
+			}
+		});
+
 		button_next.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		button_next.setBounds(362, 423, 172, 47);
 		contentPane.add(button_next);
@@ -99,6 +112,7 @@ public class frame1 extends JFrame {
 
 		remainingblogs.setBounds(10, 470, 172, 14);
 		contentPane.add(remainingblogs);
+
 		final Timer timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 
@@ -129,16 +143,18 @@ public class frame1 extends JFrame {
 			}
 			for (int i = 0; i <= 6; i++) {
 
-				if (ergebnisse[i].getText().equals(String.valueOf(result[i]))||ergebnisse[i].getText().equals("cheat")) {
+				if (ergebnisse[i].getText().equals(String.valueOf(result[i]))
+						|| ergebnisse[i].getText().equals("cheat")) {
 					ergebnisse[i].setBackground(Color.green);
 					results.addcorrectanswer();
 				} else
 					ergebnisse[i].setBackground(Color.red);
-				System.out.println(String.valueOf(result[i]));	//Nur zu Testzwecken!
+				System.out.println(String.valueOf(result[i])); // Nur zu
+																// Testzwecken!
 			}
 			blog--;
 			for (int i = 0; i <= 6; i++) {
-
+				timestart = System.currentTimeMillis(); // !!!!!!!!!!!!!!!!!!!!!!!!!!
 				ergebnisse[i].setText("");
 				for (int j = 0; j < 6; j++) {
 					if (j == 5) {
@@ -188,5 +204,8 @@ public class frame1 extends JFrame {
 		crrctanswers.setBounds(373, 10, 380, 20);
 		crrctanswers.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		contentPane.add(crrctanswers);
+		// timespec.setBounds(425, 243, 46, 14);
+		// contentPane.add(timespec);
+		// timespec.setText(results.gettime());
 	}
 }
